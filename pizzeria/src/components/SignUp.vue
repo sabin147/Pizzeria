@@ -1,364 +1,324 @@
 <template>
-  <div class="container mt-5">
-    <div class="row">
-      <div class="col-md-6">
-        <div class="card signup-card">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-6 col-md-8 col-sm-10">
+        <!-- Login Form -->
+        <div v-if="showLoginForm && !token" class="card form-card">
           <div class="card-body">
-            <div class="signup-container">
-              <div class="left-pane">
-                <img class="logo" src="images/SignUpjpg.jpg" alt="signup logo">
-                <h1 class="signup-title">Signup Here</h1>
-                <form @submit.prevent="addCustomers" class="register">
-                  <div class="form-group">
-                    <label for="username">Enter Name</label>
-                    <input v-model="addData.username" id="username" type="text" class="form-control vintage-input" placeholder="Enter Name">
-                  </div>
-                  <div class="form-group">
-                    <label for="password">Enter Password</label>
-                    <input v-model="addData.password" id="password" type="password" class="form-control vintage-input" placeholder="Enter Password">
-                  </div>
-                  <div class="form-group">
-                    <label for="email">Enter Email</label>
-                    <input v-model="addData.email" id="email" type="text" class="form-control vintage-input" placeholder="Enter Email">
-                  </div>
-                  <button type="submit" class="btn btn-success vintage-button">Sign Up</button>
-                </form>
-                <div class="vintage-message">{{ addMessage }}</div>
-              </div>
+            <div class="form-container">
+              <img class="logo" src="images/Login.jpg" alt="login logo">
+              <h1 class="form-title">Login</h1>
+              <form @submit.prevent="loginUser" class="login-form">
+                <div class="form-group">
+                  <label for="loginEmail">Email</label>
+                  <input v-model="loginData.email" id="loginEmail" type="email" class="form-control" placeholder="Enter your email" >
+                </div>
+                <div class="form-group">
+                  <label for="loginPassword">Password</label>
+                  <input v-model="loginData.password" id="loginPassword" type="password" class="form-control" placeholder="Enter your password" >
+                </div>
+                <p class="form-switch">Don't have an account? <span @click="switchToSignupForm" class="clickable-text">Signup Here</span></p>
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+              </form>
+              <div class="form-message">{{ loginMessage }}</div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="col-md-6">
-        <div class="card bg-light secondary-card">
+
+        <!-- Signup Form -->
+        <div v-if="showSignupForm && !token" class="card form-card">
           <div class="card-body">
-            <div class="secondary-container">
-              <h1 class="help">See What Our Customer are saying?</h1>
-              <ul class="list-style">
-                <li>
-                  <div class="customer-review">
-                    <img src="images/customer1.jpg" alt="Customer 1" class="customer-avatar">
-                    <p class="customer-comment">"Hugh Burgers love it!"</p>
-                  </div>
-                </li>
-                <li>
-                  <div class="customer-review">
-                    <img src="images/customer2.jpg" alt="Customer 2" class="customer-avatar">
-                    <p class="customer-comment">"Highly recommend this place."</p>
-                  </div>
-                </li>
-                <li>
-                  <div class="customer-review">
-                    <img src="images/customer3.jpg" alt="Customer 3" class="customer-avatar">
-                    <p class="customer-comment">"East or West noodles here is the best."</p>
-                  </div>
-                </li>
-                <li>
-                  <div class="customer-review">
-                    <img src="images/customer4.jpg" alt="Customer 4" class="customer-avatar">
-                    <p class="customer-comment">"This is favourite place for my kid."</p>
-                  </div>
-                </li>
-                <li class="contact-heading">Contact our customer service center here </li>
-                <li>
-                  <div class="contact-info">
-                    <p>Phone: 123-456-7890</p>
-                    <p>Email: pizzeria@roskilde.com</p>
-                  </div>
-                </li>
-              </ul>
-              <a href="/contactUs" class="btn btn-success contact-button">Contact Us</a>
-              <li class="subscribe-heading">Subscribe to our newsletter for updates.</li>
-              <a href="#" class="btn btn-primary subscribe-button">Subscribe to Newsletter</a>
+            <div class="form-container">
+              <img class="logo" src="images/SignUp.jpg" alt="signup logo">
+              <h1 class="form-title">Sign Up</h1>
+              <form @submit.prevent="registerCustomers" class="signup-form">
+                <div class="form-group">
+                  <label for="username">Name</label>
+                  <input v-model="registerData.username" id="username" type="text" class="form-control" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input v-model="registerData.email" id="email" type="email" class="form-control" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <input v-model="registerData.password" id="password" type="password" class="form-control" placeholder="Create a password" required>
+                </div>
+                <p class="form-switch">Already have an account? <span @click="switchToLoginForm" class="clickable-text">Login Here</span></p>
+                <button type="submit" class="btn btn-success btn-block">Sign Up</button>
+              </form>
+              <div class="form-message">{{ registerMessage }}</div>
             </div>
+          </div>
+        </div>
+
+        <!-- Profile Page -->
+        <div v-if="token" class="card profile-card">
+          <div class="card-body">
+            <profile />
+            <button @click="logout" class="btn btn-danger btn-block logout-button">Logout</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
-  <style scoped>
-  
-    .signup-card,
-    .secondary-card{
-      height : 100%
-    }
-    .signup-container {
-      
-      grid-template-columns: 1fr 1fr; /* Split into two columns */
-      justify-content: center;
-      align-items: center;
-      height: 87vh;
-      background-color: #f8e9d3;
-      padding : 20px;
-      flex: 1;
-      box-sizing: border-box;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }  
-    .left-pane{
-      display: flex;
-    flex: 1;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Center horizontally */
-    justify-content: center; /* Center vertically */
-    }
-  
-    .logo {
-      width: 100px;
-      margin-bottom: 10px;
-    }
-  
-    .signup-title {
-      color: #b87f41; /* Vintage brown title color */
-      font-family: 'Dancing Script', cursive; /* Vintage-style font */
-      font-size: 24px;
-    }
-  
-    .register {
-      text-align: center;
-    }
-    /* Style for the help pane */
-  .help {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-    .vintage-input {
-      display:block;
-      border: 1px solid #b87f41; /* Vintage brown input border */
-      border-radius: 5px;
-      padding: 10px;
-      margin-bottom: 20px;
-      width: 300px;
-      font-size: 16px;
-    }
-  
-    .vintage-button {
-      background-color: #b87f41; /* Vintage brown button background */
-      color: #fff; /* White text color */
-      border: none;
-      border-radius: 5px;
-      padding: 10px 20px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 16px;
-    }
-  
-    .vintage-button:hover {
-      background-color: #9a6e38; /* Darker brown on hover */
-    }
-  
-    .vintage-message {
-      color: #b87f41; /* Vintage brown message color */
-      font-weight: bold;
-      font-size: 16px;
-      margin-top: 10px;
-    }
 
-    .secondary-container{
-      background: #f8e6c5;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      border-radius: 5px;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .help {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
-  }
-   /* Style for the contact heading */
-   .contact-heading {
-    font-weight: bold;
-    color: #b87f41; /* Vintage brown title color */
-    margin-top: 20px;
+<style scoped>
+  /* Global Styles */
+  body {
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
   }
 
-  /* Style for the contact button */
-  .contact-button {
-    background-color: #b87f41; /* Vintage brown button background */
-    color: #fff; /* White text color */
+  /* Card Styles */
+  .card {
     border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 16px;
-    margin-top: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
   }
 
-  .contact-button:hover {
-    background-color: #9a6e38; /* Darker brown on hover */
+  .card:hover {
+    transform: scale(1.02);
   }
 
-  /* Style for the subscribe heading */
-  .subscribe-heading {
-    font-weight: bold;
-    color: #b87f41; /* Vintage brown title color */
-    margin-top: 20px;
-  }
-
-  /* Style for the subscribe button */
-  .subscribe-button {
-    background-color: #007bff; /* Vintage brown button background */
-    color: #fff; /* White text color */
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 16px;
-    margin-top: 10px;
-  }
-
-  .subscribe-button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-  }
-
-  .customer-review {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    color: #b87f41; /* Vintage brown title color */
-    font-family: 'Dancing Script', cursive; /* Vintage-style font */
+  /* Form Container Styles */
+  .form-container {
     text-align: center;
   }
 
-  .customer-avatar {
-    width: 50px;
-    height: 50px;
+  /* Logo Styles */
+  .logo {
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
-    margin-right: 10px;
+    margin-bottom: 20px;
+    object-fit: cover;
   }
 
-  .customer-comment {
-    font-size: 16px;
+  /* Form Title Styles */
+  .form-title {
+    font-size: 24px;
+    margin-bottom: 20px;
     color: #333;
   }
 
+  /* Form Styles */
+  .form-group {
+    margin-bottom: 24px;
+  }
 
-  .contact-info {
+  .form-control {
+    padding: 14px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s ease-in-out;
+  }
+
+  .form-control:focus {
+    border-color: #007bff;
+  }
+
+  /* Form Switch Styles */
+  .form-switch {
+    color: #6c757d;
+    font-size: 14px;
+  }
+
+  .clickable-text {
+    cursor: pointer;
+    color: #007bff;
+    font-weight: bold;
+  }
+
+  /* Button Styles */
+  .btn {
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+  }
+
+  .btn-success {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+  }
+
+  .btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+  }
+
+  .btn-block {
+    display: block;
+    width: 100%;
+  }
+
+  /* Message Styles */
+  .form-message {
+    color: #dc3545;
+    margin-top: 10px;
+  }
+
+  /* Profile Page Styles */
+  .profile-card,
+  .form-card {
+    margin-top: 50px;
     text-align: center;
+  }
+
+  .profile-card:hover,
+  .form-card:hover {
+    transform: scale(1.02);
+  }
+
+  /* Logout Button Styles */
+  .logout-button {
     margin-top: 20px;
+    border-radius: 5px;
+    padding: 14px 20px;
+    cursor: pointer;
+    outline: none;
   }
 
-  .contact-info p {
-    margin-bottom: 5px;
-    color: #333;
-    font-family: 'Dancing Script', cursive; /* Vintage-style font */
-    text-align: center;
-
+  .logout-button:hover {
+    background-color: #c82333;
   }
 
-  .list-style li {
-    list-style: none;
-    padding-left: 0;
-    margin-bottom: 10px;
-    color: #333;
+  @media (max-width: 768px) {
+    /* Responsive Styles */
+    .card {
+      margin-bottom: 20px;
+    }
   }
-  </style>
-  
+</style>
 
 <script>
-import axios from 'axios';
-const baseUri = "https://localhost:7159/api/"
-
-export default {
-  data() {
-    return {
-      dataSeries: [],
-      filteredData: [],
-      error: null,
-      addData: { name: "", password: "", email: "" },
-      addMessage: ""
-    };
-  },
+  import Profile from './Profile.vue';
+  import axios from 'axios';
+  const baseUri = "https://localhost:7159/api/User"
   
-  async created() {
-    console.log("created method called");
-    this.helperGetPosts(baseUri);
+  export default {
+    components: {
+    Profile,
+    
   },
-  
-  methods: {
-    getAllPosts() {
+    data() {
+      return {
+        dataSeries: [],
+        filteredData: [],
+        error: null,
+        registerData: { username: "", email: "", password: "" },
+        registerMessage: "",
+        loginData: { email: "", password: "" },
+        loginMessage: "",
+        showLoginForm: true,
+        showSignupForm: false,
+        token: null, // Added token state
+        userEmail: "",
+        
+      };
+    },
+    
+    async created() {
+      console.log("created method called");
       this.helperGetPosts(baseUri);
-    },
-    
-    async helperGetPosts(uri) {
-      try {
-        const response = await axios.get(uri + "OrderItem");
-        this.dataSeries = await response.data;
-        this.error = null;
-        this.filteredData = this.dataSeries;
-      } catch (ex) {
-        this.dataseries = [];
-        this.error = ex.message;
+  
+      // Check for an existing token on page load
+      const storedToken = localStorage.getItem('token');
+      if (storedToken) {
+        this.token = storedToken;
+        // Perform additional actions if needed
       }
     },
     
-    async addCustomers() {
-      try {
-        console.log("Adding customer data:", this.addData); // Log the data being sent
-        const response = await axios.post(baseUri + "User", this.addData);
-        console.log("Add customer response:", response); // Log the response from the server
-        this.addMessage = "Response " + response.status + " " + response.statusText;
-        this.getAllPosts();
-        this.addData = { name: "", password: "", email: "" };
-      } catch (ex) {
-        alert(ex.message);
-      }
+    
+    
+    methods: {
+      getAllPosts() {
+        this.helperGetPosts(baseUri);
+      },
+      
+      async helperGetPosts(uri) {
+        try {
+          const response = await axios.get(uri, { headers: { Authorization: `Bearer ${this.token}` } });
+          this.dataSeries = await response.data;
+          this.error = null;
+          this.filteredData = this.dataSeries;
+        } catch (ex) {
+          this.dataseries = [];
+          this.error = ex.message;
+        }
+      },
+      switchToSignupForm() {
+        this.showLoginForm = false;
+        this.showSignupForm = true;
+      },
+  
+      switchToLoginForm() {
+        this.showLoginForm = true;
+        this.showSignupForm = false;
+      },
+      
+      
+      async registerCustomers() {
+        try {
+          console.log("Registering customer data:", this.registerData); // Log the data being sent
+          const response = await axios.post(baseUri + "/register-customer", this.registerData);
+          console.log("Add customer response:", response); // Log the response from the server
+          this.registerMessage = "Response " + response.status + " " + response.statusText;
+          this.getAllPosts();
+          this.registerData = { username: "", password: "", email: "" };
+        } catch (ex) {
+          alert(ex.message);
+        }
+      },
+      async loginUser() {
+        try {
+          console.log("Logging in user data:", this.loginData);
+          const response = await axios.post(baseUri + "/login", this.loginData);
+          console.log("Login user response:", response);
+          this.loginMessage = "Login successful!"; // You can handle the login response as needed
+  
+          // Set the user's email for greeting message
+          this.userEmail = this.loginData.email;
+          console.log("email: ", this.userEmail);
+  
+          // Store the token on successful login
+          this.token = response.data;
+          console.log('Token before storing in local storage:', this.token);
+          localStorage.setItem('token', this.token);
+          console.log(localStorage);
+  
+          // Reset login data
+          this.loginData = { email: "", password: "" };
+  
+        } catch (ex) {
+          this.loginMessage = "Login failed. " + ex.message;
+        }
+      },
+      logout() {
+        localStorage.removeItem('token');
+        this.token = null;
+        this.userEmail = "";
+        console.log("User logged out.");
+      },
+      
+  
     }
-  }
-};
+  };
 </script>
+  
 
-<!-- <style scoped>
-.signup-container {
-  background-color: black; /* Match your homepage background color */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  color: white; /* Text color */
-}
 
-.logo {
-  width: 100px;
-  margin-bottom: 10px;
-}
-
-.register {
-  text-align: center;
-}
-
-.register input {
-  display: block;
-  width: 300px;
-  height: 40px;
-  padding-left: 20px;
-  margin-bottom: 30px;
-  border: 1px solid skyblue;
-  background-color: transparent; /* Make input fields transparent */
-  color: white; /* Text color */
-}
-
-.register button {
-  width: 300px;
-  height: 40px;
-  border: 1px solid skyblue;
-  background: skyblue;
-  color: #fff;
-  cursor: pointer;
-}
-
-.register button:hover {
-  background: #007bff; /* Change button background color on hover */
-}
-</style> -->

@@ -1,224 +1,299 @@
 <template>
-  <div class="customer-container">
-    <section class="jumbotron text-center scroll-animation vintage-jumbotron">
-      <h1 class="pizza-title">Welcome to Our Customer Page</h1>
-      <p class="pizza-description">Find and manage your customers here.</p>
+  <div class="restaurant-container">
+    <section class="hero-section">
+      <div class="hero-content">
+        <h1 class="restaurant-title">Gastronomic Wonderland</h1>
+        <p class="restaurant-description">Embark on a culinary journey like never before.</p>
+      </div>
     </section>
 
-    <div class="container">
-      <section>
-        <div class="card mb-4 scroll-animation vintage-card">
-          <div class="card-body">
-            <h2 class="card-title vintage-title">Search by Name</h2>
-            <div class="input-group">
-              <input placeholder="Name" type="text" class="form-control" v-model="name">
-              <div class="input-group-append">
-                <button v-on:click="filterByName(name)" class="btn btn-primary">Filter</button>
-                <button v-on:click="getAllPosts()" class="btn btn-primary">GetAll</button>
+    <section class="customer-list-section">
+      <div class="customer-list">
+        <div v-if="error" class="error-message">{{ error }}</div>
+        <div class="customer-item" v-for="data in filteredData" :key="data.userId">
+          <div class="customer-details">
+            <h2 class="customer-name">{{ data.username }}</h2>
+            <p class="customer-info">ID: {{ data.userId }}</p>
+            <p class="customer-info">Email: {{ data.email }}</p>
+            <p class="customer-info">Subscription: {{ data.subscriptionId }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+
+    <section class="add-update-section">
+      <!-- Filter Customer Form -->
+      <div class= "filter-delete-container">
+        <div class="customer-form">
+        <h3 class="section-title">Find Your Customer</h3>
+        <form @submit.prevent="filterByName">
+          <div class="form-group">
+            <label for="filterUsername" class="form-label">Customer Name:</label>
+            <input v-model="filteredData.name" type="text" class="form-input" />
+          </div>
+          <button type="submit" class="btn btn-primary">Find Customer</button>
+          <button @click="getAllPosts" class="btn btn-info">Get All Customers</button>
+        </form>
+      </div>
+
+      <!-- Delete Customer Form -->
+      <div class="customer-form">
+        <h3 class="section-title">Delete Customer</h3>
+        <form @submit.prevent="deleteCustomer">
+          <div class="form-group">
+            <label for="deleteCustomerId" class="form-label">Customer ID:</label>
+            <input v-model="deleteData.customerId" type="text" class="form-input" />
+          </div>
+          <button type="submit" class="btn btn-danger">Delete Customer</button>
+          <div class="error-message">{{ deleteMessage }}</div>
+        </form>
+      </div>
+      </div>
+      <div class="add-update-container">
+        <div class="add-customer-section">
+          <h2 class="section-title">Savor New Delights</h2>
+          <div class="customer-form">
+            <form @submit.prevent="addCustomers">
+              <div class="form-group">
+                <label for="username" class="form-label">Customer Name:</label>
+                <input v-model="addData.username" placeholder="Enter Name" type="text" class="form-input" />
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <div class="card mb-4 scroll-animation vintage-card">
-          <div class="card-body">
-            <h2 class="card-title vintage-title">Add Customer</h2>
-            <div class="form-group">
-              <label for="username" class="vintage-label">Customer Name:</label>
-              <input v-model="addData.username" placeholder="Customer Name" type="text" class="vintage-input" />
-            </div>
-            <div class="form-group">
-              <label for="password" class="vintage-label">Password:</label>
-              <input v-model="addData.password" placeholder="Password" type="password" class="vintage-input" />
-            </div>
-            <div class="form-group">
-              <label for="email" class="vintage-label">Email:</label>
-              <input v-model="addData.email" placeholder="Email" type="email" class="vintage-input" />
-            </div>
-            <button v-on:click="addCustomers()" class="btn btn-success vintage-button">Add</button>
-            <div class="vintage-message">{{ addMessage }}</div>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <div class="card mb-4 scroll-animation vintage-card">
-          <div class="card-body">
-            <h2 class="card-title vintage-title">Update Customer</h2>
-            <div class="form-group">
-              <label for="customerId" class="vintage-label">Customer ID:</label>
-              <input v-model.number="updateData.customerId" placeholder="ID" type="number" class="vintage-input" />
-            </div>
-            <div class="form-group">
-              <label for="updateUsername" class="vintage-label">Customer Name:</label>
-              <input v-model="updateData.username" placeholder="Customer Name" type="text" class="vintage-input" />
-            </div>
-            <div class="form-group">
-              <label for="updatePassword" class="vintage-label">Password:</label>
-              <input v-model="updateData.password" placeholder="Password" type="password" class="vintage-input" />
-            </div>
-            <div class="form-group">
-              <label for="updateEmail" class="vintage-label">Email:</label>
-              <input v-model="updateData.email" placeholder="Email" type="email" class="vintage-input" />
-            </div>
-            <div class="text-center">
-              <button v-on:click="updateCustomer()" class="btn btn-success vintage-button">Update</button>
-            </div>
-            <div class="vintage-message">{{ updateMessage }}</div>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <div class="classic-card mb-4 scroll-animation">
-          <div class="classic-card-body">
-            <h2 class="classic-card-title">List of Customers</h2>
-            <div v-if="error" class="classic-error">{{ error }}</div>
-            <div class="menu-items">
-              <div class="menu-item" v-for="data in filteredData" :key="data.userId">
-                <div class="menu-item-details">
-                  <h3 class="menu-item-name">{{ data.username }}</h3>
-                  <p class="menu-item-description">Customer ID: {{ data.userId }}</p>
-                  <p class="menu-item-description">Email: {{ data.email }}</p>
-                  <!-- Add more customer information here as needed -->
-                </div>
+              <div class="form-group">
+                <label for="password" class="form-label">Password:</label>
+                <input v-model="addData.password" placeholder="Enter Password" type="password" class="form-input" />
               </div>
-            </div>
+              <div class="form-group">
+                <label for="email" class="form-label">Email:</label>
+                <input v-model="addData.email" placeholder="Enter Email" type="email" class="form-input" />
+              </div>
+              <button type="submit" class="btn btn-success">Add Customer</button>
+              <div class="success-message">{{ addMessage }}</div>
+            </form>
           </div>
         </div>
-      </section>
-    </div>
+        <div class="update-customer-section">
+          <h2 class="section-title">Elevate Your Palate</h2>
+          <div class="customer-form">
+            <form @submit.prevent="updateCustomer">
+              <div class="form-group">
+                <label for="customerId" class="form-label">Customer ID:</label>
+                <input v-model.number="updateData.customerId" placeholder="Enter ID" type="number" class="form-input" />
+              </div>
+              <div class="form-group">
+                <label for="updateUsername" class="form-label">New Name:</label>
+                <input v-model="updateData.username" placeholder="Enter New Name" type="text" class="form-input" />
+              </div>
+              <div class="form-group">
+                <label for="updatePassword" class="form-label">New Password:</label>
+                <input v-model="updateData.password" placeholder="Enter New Password" type="password" class="form-input" />
+              </div>
+              <div class="form-group">
+                <label for="updateEmail" class="form-label">New Email:</label>
+                <input v-model="updateData.email" placeholder="Enter New Email" type="email" class="form-input" />
+              </div>
+              <button type="submit" class="btn btn-success">Update Customer</button>
+              <div class="success-message">{{ updateMessage }}</div>
+            </form>
+          </div>
+        </div>
+      </div>      
+    </section>
   </div>
 </template>
 
 <style scoped>
-  /* Apply styles to the entire template */
-  .customer-container {
-    background-color: #f8e9d3; /* Vintage beige background color */
-    font-family: 'Georgia', serif; /* Vintage font */
-  }
-
-  /* Style input fields */
-  .form-control {
-    border: 3px solid #c84937;
-    border-radius: 10px;
-    padding: 20px;
-    font-size: 16px;
-  }
-
-  /* Custom styles for the vintage restaurant look */
-  .vintage-card {
-    background-color: #f7e5d3; /* Vintage cream color */
-    border: 2px solid #d9bf8e; /* Vintage brown border */
-    border-radius: 10px;
-    padding: 20px;
-  }
-
-  .vintage-title {
-    color: #b87f41; /* Vintage brown title color */
-    font-family: 'Dancing Script', cursive; /* Vintage-style font */
+  /* Apply advanced CSS styles for an attractive design */
+  .restaurant-container {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to right, #ffafbd, #ffc3a0);
+    color: #4a4e69;
     text-align: center;
   }
 
-  .vintage-label {
-    color: #b87f41; /* Vintage brown label color */
+  .hero-section {
+    padding: 100px 0;
+    background: linear-gradient(to right, #a18cd1, #fbc2eb);
+    color: #ffffff;
   }
 
-  .vintage-input {
-    border: 1px solid #b87f41; /* Vintage brown input border */
-    border-radius: 5px;
-    padding: 5px;
-    margin-bottom: 10px;
-  }
-
-  .vintage-button {
-    background-color: #b87f41; /* Vintage brown button background */
-    color: #fff; /* White text color */
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    cursor: pointer;
+  .restaurant-title {
+    font-size: 3em;
+    margin-bottom: 20px;
     font-weight: bold;
-    margin-top: 10px;
+    letter-spacing: 2px;
   }
 
-  .vintage-button:hover {
-    background-color: #9a6e38; /* Darker brown on hover */
+  .restaurant-description {
+    font-size: 1.5em;
   }
 
-  .vintage-message {
-    color: #b87f41; /* Vintage brown message color */
-    font-weight: bold;
-    text-align: center;
-    margin-top: 10px;
+  .customer-list-section {
+    padding: 50px 0;
   }
 
-  /* Styles for the classic card */
-  .classic-card {
-    background-color: #f8e6c5;
-    border: 2px solid #d2a73d;
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-  }
-
-  .classic-card-title {
-    color: #d2a73d;
-    font-family: 'Dancing Script', cursive;
-    font-size: 24px;
-  }
-
-  .classic-error {
-    color: #ff0000;
-    font-weight: bold;
-    margin-top: 10px;
-  }
-
-  /* Style the menu items (customers) */
-  .menu-items {
-    display: flex;
-    flex-wrap: wrap;
+  .customer-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
     justify-content: center;
   }
 
-  .menu-item {
-    border: 2px solid #d2a73d;
+  .customer-item {
+    background: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    padding: 10px;
-    margin: 10px;
-    width: 300px;
-    text-align: center;
-    background-color: #f8e6c5;
+    overflow: hidden;
   }
 
-  .menu-item-name {
+  .customer-details {
+    padding: 20px;
+  }
+
+  .customer-name {
+    font-size: 1.5em;
     font-weight: bold;
-    font-size: 20px;
+    margin-bottom: 10px;
   }
 
-  .menu-item-description {
-    font-size: 16px;
+  .customer-info {
+    font-size: 1.2em;
+    color: #666;
+    margin-bottom: 8px;
   }
 
-  /* Apply animation to scroll down button */
-  .scroll-animation {
-    animation: fadeInUp 1.5s ease;
+  .search-section {
+    background: #f3e9d2;
+    padding: 80px 0;
   }
 
-  @keyframes fadeInUp {
-    0% {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  .section-title {
+    font-size: 2.5em;
+    color: #4a4e69;
+    margin-bottom: 30px;
+    font-weight: bold;
   }
+
+  .search-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 15px;
+    font-size: 1em;
+    border: none;
+    border-bottom: 2px solid #4a4e69;
+    margin-bottom: 20px;
+    background: transparent;
+    color: #4a4e69;
+  }
+
+  .search-buttons button {
+    font-size: 1em;
+    padding: 15px 30px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    margin-right: 20px;
+    transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+  }
+
+  .search-buttons button:first-child {
+    background-color: #f76c6c;
+    color: #ffffff;
+  }
+
+  .search-buttons button:last-child {
+    background-color: #4a4e69;
+    color: #ffffff;
+  }
+
+  .add-update-section {
+    background: #ffffff;
+    padding: 100px 0;
+  }
+
+  .add-update-container {
+    display: flex;
+    justify-content: space-around;
+    gap: 50px;
+  }
+
+  .customer-form {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  .customer-form form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+  }
+
+  .form-label {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 15px;
+    font-size: 1em;
+    border: none;
+    border-bottom: 2px solid #4a4e69;
+    margin-bottom: 20px;
+    background: transparent;
+    color: #4a4e69;
+  }
+
+  .btn-success {
+    background-color: #2ecc71;
+    color: #ffffff;
+  }
+  .add-update-section {
+    background: #ffffff;
+    padding: 100px 0;
+  }
+
+  .add-update-container {
+    display: flex;
+    justify-content: space-around;
+    gap: 50px;
+  }
+
+  .filter-delete-container {
+    display: flex;
+    justify-content: space-around;
+    gap: 50px;
+    margin-top: 50px; /* Adjust as needed */
+  }
+
+  .customer-form {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  .filter-delete-container {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+  }
+
+  /* Style for Find Customer button */
+  
+  
 </style>
-
+ 
 
 <script>
    const baseUri = "https://localhost:7159/api/"
@@ -232,7 +307,14 @@
             addData: {name: "", password: "", email: ""},
             addMessage: "",
             updateData: {customerId: 0, name: "", password: "", email: ""},
-            updateMessage:""
+            updateMessage:"",
+            deleteData: { customerId : null},
+            deleteMessage: "",
+
+
+
+
+
 
         }
     },
@@ -258,10 +340,9 @@
                 
             }
         },
-        filterByName(name) {
-            console.log("name: "+name)
-            this.filteredData = this.dataSeries.filter(f => f.username.toLowerCase().includes(name.toLowerCase()))
-            console.log("Dataseries: "+this.dataSeries)
+                filterByName() {
+            // Update the filter to use filteredData.name
+            this.filteredData = this.dataSeries.filter(f => f.username.includes(this.filteredData.name));
         },
         async addCustomers() {
           try {
@@ -274,6 +355,20 @@
             alert(ex.message);
           }
         },
+        async deleteCustomer() {
+          try {
+            const authToken = localStorage.getItem('token');
+            const headers = { Authorization: `Bearer ${authToken}` };
+            const response = await axios.delete(baseUri + `user/${this.deleteData.customerId}`,{ headers });
+            this.dataSeries = this.dataSeries.filter(
+              (customer) => customer.customerId !== this.deleteData.customerId
+            );
+            this.deleteMessage = "response " + response.status + " " + response.statusText;
+            this.getAllPosts();
+          } catch (ex) {
+            this.error = ex.message;
+          }
+        },
 
         async updateCustomer() {
           const url = baseUri + "user" + "/" + this.updateData.customerId;
@@ -281,7 +376,7 @@
             console.log("Updating customer data:", this.updateData); // Log the data being sent
             const response = await axios.put(url, this.updateData);
             console.log("Update customer response:", response); // Log the response from the server
-            this.updateMessage = "Response " + response.status + " " + response.statusText;
+            this.updateMessage = "response " + response.status + " " + response.statusText;
             this.updateData = {customerId: 0, name: "", password: "", email: ""};
             this.getAllPosts();
           } catch (ex) {
@@ -292,32 +387,3 @@
     }
   }
 </script>
-
-<!-- <style scoped>
-  .container {
-    background-color: black;
-    color: white;
-    padding: 20px;
-  }
-
-  .card {
-    background-color: #333;
-    color: white;
-    margin-bottom: 20px;
-  }
-
-  .card-title {
-    color: white;
-  }
-
-  .form-control {
-    background-color: #444;
-    color: white;
-  }
-
-  .btn-primary,
-  .btn-success {
-    background-color: #007bff;
-    color: white;
-  }
-</style> -->

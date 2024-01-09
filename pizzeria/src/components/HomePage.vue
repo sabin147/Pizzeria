@@ -1,13 +1,11 @@
 <template>
-    <body>
-        <div>
-          <section class="hero">
-          <h1 class="hero-title">Welcome to Our Vintage Restaurant</h1>
-          <!-- <p class="hero-subtitle">Experience the Flavors of the Past</p> -->
-          </section>
-      <br>
-      <br>
-      <br>
+  <body>
+    <div class="restaurant-container">
+      <section class="hero">
+        <h1 class="hero-title">Savor Culinary Delights</h1>
+        <p class="hero-subtitle">An Unforgettable Dining Experience</p>
+      </section>
+
       <div
         id="image-track"
         :style="{ transform: `translate(${percentage}%, -50%)` }"
@@ -28,15 +26,79 @@
           :alt="image.alt"
           draggable="false"
           :style="{ objectPosition: `${100 + percentage}% center` }"
+          @dblclick="handleImageDoubleClick"
         />
       </div>
-    </div> 
-    </body>
-    
-    
-  </template>
+    </div>
+  </body>
+</template>
+
+<style scoped>
+body {
+  height: 100vh;
+  width: 100vw;
+  background-color: #e6f1f1;
+  margin: 0;
+  overflow: hidden;
+}
+
+.restaurant-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.hero {
+  text-align: center;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10vh 0 60px;
+  z-index: 1;
+}
+
+.hero-title {
+  font-size: 42px;
+  font-weight: bold;
+  color: #004d40;
+  margin-bottom: 20px;
+}
+
+.hero-subtitle {
+  font-size: 20px;
+  color: #00695c;
+  margin-bottom: 30px;
+}
+
+#image-track {
+  display: flex;
+  gap: 2vmin;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  user-select: none;
+}
+
+#image-track > .image {
+  width: 40vmin;
+  height: 56vmin;
+  object-fit: cover;
+  object-position: 100% center;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+</style>
+
+
   
   <script>
+  // Import the router from your router file
+import router from '@/router'; // Adjust the path accordingly
+
   export default {
     data() {
       return {
@@ -102,55 +164,13 @@
           );
         }
       },
+      handleImageDoubleClick() {
+    // Navigate to ShoppingCart.vue
+    router.push('/shoppingcart'); // Adjust the route path accordingly
+  },
     },
   };
   </script>
   
-  <style scoped>
-  body {
-    height: 100vh;
-    width: 100vw;
-    background-color: #f8e9d3;
-    margin: 0rem;
-    overflow: hidden;
-  }
-  
-  h1 {
-    color: white;
-  }
-  .hero {
-      text-align: center;
-      padding: 1px 0;
-    }
-  
-    .hero-title {
-      font-size: 36px;
-      margin-bottom: 20px;
-    }
-  
-    .hero-subtitle {
-      font-size: 24px;
-      margin-bottom: 10px;
-    }
-  
-  #image-track {
-    display: flex;
-    gap: 4vmin;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(0%, -50%);
-    user-select: none;
-  }
-  
-  #image-track > .image {
-    width: 40vmin;
-    height: 56vmin;
-    object-fit: cover;
-    object-position: 100% center;
-  }
-  
- 
-  
-  </style>
+
   

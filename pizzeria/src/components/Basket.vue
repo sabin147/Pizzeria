@@ -54,7 +54,15 @@
           },
           async helperGetPosts(uri) {
               try {
-                  const response = await axios.get(uri +"OrderItem")
+                  const token = localStorage.getItem('token');
+
+                  // Set up the request headers with the bearer token
+                  const headers = {
+                      'Authorization': `Bearer ${token}`,
+                      'Content-Type': 'application/json', // Adjust content type if needed
+                  };
+
+                  const response = await axios.get(uri +"OrderItem",{headers})
                   this.dataSeries = await response.data
                   this.error = null
                   this.filteredData = this.dataSeries

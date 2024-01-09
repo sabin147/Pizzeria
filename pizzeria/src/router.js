@@ -8,6 +8,14 @@ import Basket from './components/Basket.vue';
 import SignUp from './components/SignUp.vue';
 import Home from './components/Home.vue';
 import ContactUs from './components/ContactUs.vue';
+import Profile from './components/Profile.vue';
+import Subscription from './components/Subscription.vue';
+import Payment from './components/Payment.vue';
+import Reservation from './components/Reservation.vue';
+import ShoppingCart from './components/ShoppingCart.vue';
+import Notification from './components/Notification.vue';
+import CustomerReview from './components/CustomerReview.vue';
+
 
 
 const routes = [
@@ -50,7 +58,43 @@ const routes = [
     path: '/contactUs',
     name: 'ContactUs',
     component: ContactUs,
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile,
+  },
+  {
+    path: '/subscription',
+    name: 'Subscription',
+    component: Subscription,
+  },
+  {
+    path: '/payment',
+    name: 'Payment',
+    component: Payment,
+  },
+  {
+    path: '/reservation',
+    name: 'Reservation',
+    component: Reservation,
+  },
+  {
+    path: '/shoppingCart',
+    name: 'ShoppingCart',
+    component: ShoppingCart,
+  },
+  {
+    path: '/notification',
+    name: 'Notification',
+    component: Notification,
+  },
+  {
+    path: '/customerReview',
+    name: 'CustomerReview',
+    component: CustomerReview,
   }
+
 
 
  

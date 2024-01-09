@@ -1,42 +1,27 @@
 <template>
   <div>
     <header>
-      <nav class="navbar navbar-expand-lg navbar-light vintage-navbar">
-        <router-link to="/" class="navbar-brand vintage-brand">Pizzeria and Restro </router-link>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <router-link to="/fooditem" class="nav-link vintage-link">FoodItem</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link to="/order" class="nav-link vintage-link">Order</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link to="/basket" class="nav-link vintage-link">Basket</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link to="/contactUs" class="nav-link vintage-link">Contact Us</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link to="/home" class="nav-link vintage-link">About Us</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link to="/customer" class="nav-link vintage-link">Customers</router-link>
-            </li>
-          </ul>
+      <nav class="navbar modern-navbar">
+        <router-link to="/" class="navbar-brand modern-brand">Pizzeria and Restro</router-link>
+        <div class="navbar-links">
+          <router-link to="/shoppingCart" class="nav-link modern-link">Menu</router-link>
+          <router-link to="/fooditem" class="nav-link modern-link">FoodItem</router-link>
+          <router-link to="/order" class="nav-link modern-link">Order</router-link>
+          <router-link to="/basket" class="nav-link modern-link">Basket</router-link>
+          <router-link to="/customer" class="nav-link modern-link">Customers</router-link>
+          <router-link to="/subscription" class="nav-link modern-link">Subscription</router-link>
+          <!-- <router-link to="/payment" class="nav-link modern-link">Payment</router-link> -->
+          <router-link to="/reservation" class="nav-link modern-link">Reservation</router-link>
+          <router-link to="/contactUs" class="nav-link modern-link">Contact Us</router-link>
+          <router-link to="/home" class="nav-link modern-link">About Us</router-link>
+          <router-link to="/notification" class="nav-link modern-link">Notification</router-link>
+          <router-link to="/customerReview" class="nav-link modern-link">Customer Review</router-link>
         </div>
-        <div class="ml-auto">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <router-link to="/signUp" class="nav-link vintage-link">Become a Customer</router-link>
-            </li>
-          </ul>      
+        <div class="navbar-actions">
+          <router-link to="/signUp" class="nav-link modern-link">Login Here</router-link>
         </div>
       </nav>
+      <ShoppingCart />
     </header>
     <div>
       <router-view></router-view>
@@ -44,29 +29,41 @@
   </div>  
 </template>
 
-<script>
-  // Your script logic here
-</script>
-
 <style scoped>
-  /* Vintage Navbar Styles */
-  .vintage-navbar {
-    background-color: #f7e5d3; /* Vintage cream color */
-    border-bottom: 2px solid #d9bf8e; /* Vintage brown border */
+  /* Modern Navbar Styles */
+  .modern-navbar {
+    background-color: #2c3e50; /* Dark blue background */
+    color: #ecf0f1; /* Light text color */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
   }
 
-  .vintage-brand {
-    color: #b87f41; /* Vintage brown title color */
-    font-family: 'Dancing Script', cursive; /* Vintage-style font */
-    font-size: 24px; /* Adjust the font size as needed */
+  .modern-brand {
+    font-family: 'Raleway', sans-serif;
+    font-size: 24px;
+    text-decoration: none;
+    color: #ecf0f1;
   }
 
-  .vintage-link {
-    color: #b87f41; /* Vintage brown link color */
+  .navbar-links {
+    display: flex;
+    gap: 20px;
+  }
+
+  .modern-link {
+    text-decoration: none;
+    color: #ecf0f1;
     font-weight: bold;
+    transition: color 0.3s ease;
   }
 
-  .vintage-link:hover {
-    color: #9a6e38; /* Darker brown on hover */
+  .modern-link:hover {
+    color: #3498db; /* Blue on hover */
+  }
+
+  .navbar-actions {
+    margin-left: auto;
   }
 </style>

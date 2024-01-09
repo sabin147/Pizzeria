@@ -50,6 +50,19 @@
       </div>
     </div>
   </div>
+  <div>
+    <h1>Notification Tab / Order History</h1>
+    <ul>
+      <li v-for="order in orderHistory" :key="order.orderId">
+        <!-- Display order details here -->
+        <div>Order ID: {{ order.orderId }}</div>
+        <div>Total: {{ order.total.toLocaleString() }} DKK</div>
+        <div>Date: {{ formatDate(order.date) }}</div>
+        <!-- Add more details as needed -->
+      </li>
+    </ul>
+  </div>
+
   
 </template>
   
@@ -65,7 +78,8 @@
             error: null,   
             id: null,
             addData:{foodItemId: null, quantity: null },
-            addMessage:""
+            addMessage:"",
+            orderHistory: [],
         }
     },
     
@@ -76,10 +90,20 @@
     methods: {
         getAllPosts() {
             this.helperGetPosts(baseUri);
+            
         },
         async helperGetPosts(uri) {
             try {
-                const response = await axios.get(uri +"Order")
+               // Retrieve the token from local storage
+                const token = localStorage.getItem('token');
+
+                // Set up the request headers with the bearer token
+                const headers = {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json', // Adjust content type if needed
+                };
+
+                const response = await axios.get(uri +"Order",{headers})
                 this.dataSeries = await response.data
                 this.error = null
                 this.filteredData = this.dataSeries
@@ -108,11 +132,7 @@
               console.error("Error:", ex);
               alert(ex.message);
           }
-},
-
-
-
-
+        },
   },
 
     
@@ -123,3 +143,5 @@
   </script>
   
   <style></style>
+
+  

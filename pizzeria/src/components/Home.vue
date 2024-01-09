@@ -1,118 +1,108 @@
 <template>
-    <div class="about-us-container">
-      <section class="jumbotron text-center vintage-jumbotron">
-        <h1 class="vintage-title">About Us</h1>
-      </section>
-  
-      <div class="container">
-        <section>
-          <div class="card mb-4 scroll-animation vintage-card">
-            <div class="card-body">
-              <p class="about-us-description">
-                We are a vintage-inspired restaurant that brings you the finest culinary experience in town. Our
-                passion for great food and exceptional service has been our driving force since the beginning.
-              </p>
-              <p class="about-us-description">
-                At Restaurant System, we believe in preserving the timeless charm of classic recipes and flavors.
-                Join us on a journey through taste and tradition.
-              </p>
-            </div>
-          </div>
-        </section>
-  
-        <section>
-          <div class="card mb-4 scroll-animation vintage-card">
-            <div class="card-body">
-              <h2 class="vintage-subtitle">Our Team</h2>
-              <p class="about-us-description">
-                Our team of dedicated chefs, waitstaff, and management work tirelessly to ensure your dining
-                experience is nothing short of extraordinary. Each member brings their unique expertise and passion to
-                create memorable moments for you.
-              </p>
-            </div>
-          </div>
-        </section>
-  
-        <section>
-          <div class="card mb-4 scroll-animation vintage-card">
-            <div class="card-body">
-              <h2 class="vintage-subtitle">Our History</h2>
-              <p class="about-us-description">
-                Restaurant System has a rich history that spans decades. Founded in [year], we've been serving
-                generations of diners with the same commitment to quality and tradition. Discover the milestones of
-                our journey.
-              </p>
-            </div>
-          </div>
-        </section>
+  <div class="about-us-container">
+    <section class="hero-section">
+      <div class="hero-content">
+        <h1 class="main-title">Our Culinary Journey</h1>
       </div>
+    </section>
+
+    <div class="container">
+      <section class="about-section">
+        <div class="card about-card">
+          <div class="card-body">
+            <h2 class="section-title">Crafting Experiences</h2>
+            <p class="about-description">
+              Embark on a culinary journey where passion meets innovation. At Restaurant System, we don't just create meals; we craft experiences. Our philosophy revolves around the art of blending flavors, creating memories, and setting new standards in the world of gastronomy.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="about-section">
+        <div class="card about-card">
+          <div class="card-body">
+            <h2 class="section-title">The Heart of Our Success</h2>
+            <p class="about-description">
+              Meet the dedicated team behind every exceptional dining experience at Restaurant System. Our chefs, waitstaff, and management are the heart and soul of our establishment. With a commitment to excellence, they work seamlessly to deliver a dining experience that goes beyond expectations.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="about-section">
+        <div class="card about-card">
+          <div class="card-body">
+            <h2 class="section-title">Our Evolution</h2>
+            <p class="about-description">
+              Established in [year], Restaurant System has evolved into a symbol of culinary excellence. From humble beginnings to becoming a culinary destination, our story is a testament to our relentless pursuit of quality and innovation. Join us as we continue to create new chapters in our gastronomic journey.
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    // Your script logic here
-  };
-  </script>
-  
-  <style scoped>
-  /* Apply styles to the entire template */
-  .about-us-container {
-    background-color: #f8e9d3; /* Vintage beige background color */
-    font-family: 'Georgia', serif; /* Vintage font */
-  }
-  
-  /* Custom styles for the vintage restaurant look */
-  .vintage-jumbotron {
-    background-color: #f7e5d3; /* Vintage cream color */
-    border: 2px solid #d9bf8e; /* Vintage brown border */
-    border-radius: 10px;
-    padding: 20px;
-  }
-  
-  .vintage-title {
-    color: #b87f41; /* Vintage brown title color */
-    font-family: 'Dancing Script', cursive; /* Vintage-style font */
-    text-align: center;
-    font-size: 36px; /* Adjust the font size as needed */
-  }
-  
-  .vintage-card {
-    background-color: #f7e5d3; /* Vintage cream color */
-    border: 2px solid #d9bf8e; /* Vintage brown border */
-    border-radius: 10px;
-    padding: 20px;
-    margin-top: 20px; /* Add spacing from the top */
-  }
-  
-  .vintage-subtitle {
-    color: #b87f41; /* Vintage brown title color */
-    font-family: 'Dancing Script', cursive; /* Vintage-style font */
-    text-align: center;
-    font-size: 28px; /* Adjust the font size as needed */
-    margin-bottom: 20px; /* Add spacing below the subtitle */
-  }
-  
-  .about-us-description {
-    color: #b87f41; /* Vintage brown text color */
-    font-size: 18px; /* Adjust the font size as needed */
-    margin-bottom: 20px; /* Add spacing between paragraphs */
-  }
-  
-  /* Apply animation to scroll down button */
-  .scroll-animation {
-    animation: fadeInUp 1.5s ease;
-  }
-  
-  @keyframes fadeInUp {
-    0% {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  </style>
-  
+  </div>
+</template>
+
+<script>
+export default {
+  // Your script logic here
+};
+</script>
+
+<style scoped>
+/* Apply styles to the entire template */
+.about-us-container {
+  background-color: #f9f9f9; /* Light gray background color */
+  font-family: 'Arial', sans-serif; /* Modern sans-serif font */
+  color: #333; /* Dark text color */
+}
+
+.hero-section {
+  background-color: #35424a; /* Dark blue background color */
+  color: #fff; /* White text color */
+  text-align: center;
+  padding: 80px 0;
+}
+
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.main-title {
+  font-size: 36px;
+  font-weight: bold;
+}
+
+.container {
+  padding: 40px 0;
+}
+
+.about-section {
+  margin-bottom: 40px;
+}
+
+.about-card {
+  background-color: #fff; /* White card background */
+  border: 1px solid #ddd; /* Light gray border */
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle box shadow for depth */
+  transition: transform 0.3s ease;
+}
+
+.about-card:hover {
+  transform: translateY(-5px); /* Add a slight lift on hover */
+}
+
+.section-title {
+  color: #35424a; /* Dark blue section title color */
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.about-description {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #555; /* Medium gray text color */
+}
+</style>
